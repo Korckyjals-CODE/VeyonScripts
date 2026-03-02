@@ -62,7 +62,7 @@ if not exist "%ENTRYPOINT_PATH%" (
 set "LOG_DIR=%BASE_DIR%logs"
 if not exist "%LOG_DIR%\" mkdir "%LOG_DIR%"
 
-for /f %%T in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-Date -Format ''yyyyMMdd-HHmmss''"') do set "STAMP=%%T"
+for /f %%T in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-Date -Format 'yyyyMMdd-HHmmss'"') do set "STAMP=%%T"
 set "LOG_FILE=%LOG_DIR%\%APP_ID%-%STAMP%.log"
 
 for %%I in ("%ENTRYPOINT_PATH%") do set "ENTRY_EXT=%%~xI"

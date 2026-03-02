@@ -125,4 +125,37 @@ cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
   - Confirm `%USERPROFILE%\VeyonTools\apps\<app-id>\` exists.
 - **No logs created**
   - Verify `%USERPROFILE%\VeyonTools\logs\` exists and rerun app.
+- **Logs created outside `VeyonTools` (for example `%USERPROFILE%\logs`)**
+  - This usually means a different `runner.cmd` was executed.
+  - Find all runner copies:
+
+```cmd
+cmd.exe /c "where /r %USERPROFILE% runner.cmd"
+```
+
+  - Reinstall to normalize paths:
+
+```cmd
+cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+```
+
+  - Run only this command going forward:
+
+```cmd
+cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello"
+```
+
+  - Optional cleanup of accidental root-level log folder:
+
+```cmd
+cmd.exe /c "if exist %USERPROFILE%\logs rmdir /s /q %USERPROFILE%\logs"
+```
+
+  - Optional cleanup of accidentally extracted root-level folders (outside `VeyonScripts`):
+
+```cmd
+cmd.exe /c "for %D in (apps bootstrap docs runner) do if exist %USERPROFILE%\%D rmdir /s /q %USERPROFILE%\%D"
+```
+
+  - Run this only after confirming `%USERPROFILE%\VeyonScripts\` has the expected folders.
 
