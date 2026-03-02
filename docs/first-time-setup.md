@@ -25,12 +25,13 @@ If using ZIP, either layout works:
 
 ## Step 2: Transfer package with Veyon File Transfer
 
-Transfer to each managed computer's user profile area (for example `Downloads`).
+Transfer to each managed computer's `%USERPROFILE%` folder (default Veyon File Transfer destination).
 
-Examples of likely target paths:
+Examples of target paths:
 
-- `%USERPROFILE%\Downloads\VeyonScripts.zip`
-- `%USERPROFILE%\Desktop\VeyonScripts.zip`
+- `%USERPROFILE%\VeyonScripts.zip` (default)
+- `%USERPROFILE%\Downloads\VeyonScripts.zip` (if you chose Downloads manually)
+- `%USERPROFILE%\Desktop\VeyonScripts.zip` (if you chose Desktop manually)
 
 If you transfer unzipped content, ensure the final folder is:
 
@@ -40,13 +41,13 @@ If you transfer unzipped content, ensure the final folder is:
 
 ### Option A (ZIP transfer)
 
-If the ZIP was transferred to `Downloads`, run this in Veyon Start application:
+If the ZIP was transferred to `%USERPROFILE%` (default), run this in Veyon Start application:
 
 ```cmd
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$zip = Join-Path $env:USERPROFILE 'Downloads\VeyonScripts.zip'; $root = Join-Path $env:USERPROFILE 'VeyonScripts'; Expand-Archive -LiteralPath $zip -DestinationPath $env:USERPROFILE -Force; if (-not (Test-Path (Join-Path $root 'bootstrap\install-or-update.cmd'))) { New-Item -ItemType Directory -Path $root -Force | Out-Null; foreach ($name in 'bootstrap','runner','apps','docs') { $src = Join-Path $env:USERPROFILE $name; if (Test-Path $src) { Move-Item -Path $src -Destination $root -Force } } }; & (Join-Path $root 'bootstrap\install-or-update.cmd')"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$zip = Join-Path $env:USERPROFILE 'VeyonScripts.zip'; $root = Join-Path $env:USERPROFILE 'VeyonScripts'; Expand-Archive -LiteralPath $zip -DestinationPath $env:USERPROFILE -Force; if (-not (Test-Path (Join-Path $root 'bootstrap\install-or-update.cmd'))) { New-Item -ItemType Directory -Path $root -Force | Out-Null; foreach ($name in 'bootstrap','runner','apps','docs') { $src = Join-Path $env:USERPROFILE $name; if (Test-Path $src) { Move-Item -Path $src -Destination $root -Force } } }; & (Join-Path $root 'bootstrap\install-or-update.cmd')"
 ```
 
-If your ZIP is in another folder (for example Desktop), change `Downloads` accordingly.
+If your ZIP is in another folder, update the `$zip` value accordingly (for example `Join-Path $env:USERPROFILE 'Downloads\VeyonScripts.zip'`).
 
 This command handles both ZIP layouts:
 
