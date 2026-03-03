@@ -59,7 +59,7 @@ This command handles both ZIP layouts:
 If `%USERPROFILE%\VeyonScripts\` already exists, run:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+"%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
 ```
 
 ### Post-extract quick check
@@ -72,16 +72,16 @@ If missing, your ZIP layout/path is wrong. Re-run Option A with the correct ZIP 
 
 ## Step 4: Run the first test app
 
-Run:
+In the Veyon Run program dialog, paste the program path in quotes and add arguments after a space:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello"
+"%USERPROFILE%\VeyonTools\runner.cmd" hello
 ```
 
 Optional argument test:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello --mode demo"
+"%USERPROFILE%\VeyonTools\runner.cmd" hello --mode demo
 ```
 
 ## Step 5: Verify success on managed computers
@@ -100,7 +100,7 @@ Confirm a new log file appears after running `hello`.
 Use only the stable runtime command pattern:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd <app-id> [args]"
+"%USERPROFILE%\VeyonTools\runner.cmd" <app-id> [args]
 ```
 
 ## Troubleshooting
@@ -118,7 +118,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$root = Join-Path $e
   - Then run:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+"%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
 ```
 - **`runner.cmd` not found**
   - Re-run install command from Step 3.
@@ -137,13 +137,13 @@ cmd.exe /c "where /r %USERPROFILE% runner.cmd"
   - Reinstall to normalize paths:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+"%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
 ```
 
   - Run only this command going forward:
 
 ```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello"
+"%USERPROFILE%\VeyonTools\runner.cmd" hello
 ```
 
   - Optional cleanup of accidental root-level log folder:

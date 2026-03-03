@@ -50,4 +50,3 @@ for /d %%A in ("%TARGET_APPS%\*") do (
 
 echo [bootstrap] Install/update complete.
 exit /b 0
-

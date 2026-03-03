@@ -87,4 +87,3 @@ if /i "%ENTRY_EXT%"==".cmd" (
 
 echo [runner] app=%APP_ID% version=%APP_VERSION% exit=%RUN_EXIT% log="%LOG_FILE%"
 exit /b %RUN_EXIT%
-
