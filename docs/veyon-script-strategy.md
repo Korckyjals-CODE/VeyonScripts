@@ -33,6 +33,7 @@ Make deployment and execution predictable:
 
 ## Why This Works Well With Veyon
 
+- Use PowerShell wrappers for Start application—Veyon handles them reliably; cmd commands with arguments can fail.
 - Veyon Start application can keep using the same command forever.
 - App updates do not require changing teacher-side run commands.
 - Rollback is easy by switching a version pointer.
@@ -42,19 +43,19 @@ Make deployment and execution predictable:
 
 Use one stable command in Start application:
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd <app-id>"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id>"
 ```
 
 With arguments:
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd <app-id> --mode quiz"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id> --mode quiz"
 ```
 
 If launching PowerShell payloads inside the runner, use:
 
-```cmd
+```powershell
 powershell.exe -ExecutionPolicy Bypass -File "<script-path>" <args>
 ```
 

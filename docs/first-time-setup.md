@@ -9,7 +9,7 @@ Create two folders on each managed computer:
 - `%USERPROFILE%\VeyonScripts\` (transferred package source)
 - `%USERPROFILE%\VeyonTools\` (installed runtime used by Veyon Start application)
 
-After first setup, daily execution should use `%USERPROFILE%\VeyonTools\runner.cmd`.
+After first setup, daily execution should use the PowerShell-wrapped runner command (see Step 4 and Daily use).
 
 ## Step 1: Prepare the package on teacher PC
 
@@ -39,11 +39,13 @@ If you transfer unzipped content, ensure the final folder is:
 
 ## Step 3: Install/update tools using Start application
 
+Veyon Start executes PowerShell reliably; cmd commands with arguments can fail. All commands below use PowerShell.
+
 ### Option A (ZIP transfer)
 
 If the ZIP was transferred to `%USERPROFILE%` (default), run this in Veyon Start application:
 
-```cmd
+```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$zip = Join-Path $env:USERPROFILE 'VeyonScripts.zip'; $root = Join-Path $env:USERPROFILE 'VeyonScripts'; Expand-Archive -LiteralPath $zip -DestinationPath $env:USERPROFILE -Force; if (-not (Test-Path (Join-Path $root 'bootstrap\install-or-update.cmd'))) { New-Item -ItemType Directory -Path $root -Force | Out-Null; foreach ($name in 'bootstrap','runner','apps','docs') { $src = Join-Path $env:USERPROFILE $name; if (Test-Path $src) { Move-Item -Path $src -Destination $root -Force } } }; & (Join-Path $root 'bootstrap\install-or-update.cmd')"
 ```
 
@@ -58,8 +60,8 @@ This command handles both ZIP layouts:
 
 If `%USERPROFILE%\VeyonScripts\` already exists, run:
 
-```cmd
-"%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonScripts\bootstrap\install-or-update.cmd')"
 ```
 
 ### Post-extract quick check
@@ -72,16 +74,16 @@ If missing, your ZIP layout/path is wrong. Re-run Option A with the correct ZIP 
 
 ## Step 4: Run the first test app
 
-In the Veyon Run program dialog, paste the program path in quotes and add arguments after a space:
+In the Veyon Run program dialog, paste this command (PowerShell invokes the runner with arguments):
 
-```cmd
-"%USERPROFILE%\VeyonTools\runner.cmd" hello
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello"
 ```
 
 Optional argument test:
 
-```cmd
-"%USERPROFILE%\VeyonTools\runner.cmd" hello --mode demo
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello --mode demo"
 ```
 
 ## Step 5: Verify success on managed computers
@@ -99,8 +101,8 @@ Confirm a new log file appears after running `hello`.
 
 Use only the stable runtime command pattern:
 
-```cmd
-"%USERPROFILE%\VeyonTools\runner.cmd" <app-id> [args]
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id> [args]"
 ```
 
 ## Troubleshooting
@@ -111,14 +113,14 @@ Use only the stable runtime command pattern:
 - **Files extracted into `%USERPROFILE%` root (not inside `VeyonScripts`)**
   - Run this recovery command in Start application:
 
-```cmd
+```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$root = Join-Path $env:USERPROFILE 'VeyonScripts'; New-Item -ItemType Directory -Path $root -Force | Out-Null; foreach ($name in 'bootstrap','runner','apps','docs') { $src = Join-Path $env:USERPROFILE $name; if (Test-Path $src) { Move-Item -Path $src -Destination $root -Force } }"
 ```
 
   - Then run:
 
-```cmd
-"%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonScripts\bootstrap\install-or-update.cmd')"
 ```
 - **`runner.cmd` not found**
   - Re-run install command from Step 3.
@@ -130,32 +132,32 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$root = Join-Path $e
   - This usually means a different `runner.cmd` was executed.
   - Find all runner copies:
 
-```cmd
-cmd.exe /c "where /r %USERPROFILE% runner.cmd"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-ChildItem -Path $env:USERPROFILE -Filter runner.cmd -Recurse -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName"
 ```
 
   - Reinstall to normalize paths:
 
-```cmd
-"%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonScripts\bootstrap\install-or-update.cmd')"
 ```
 
   - Run only this command going forward:
 
-```cmd
-"%USERPROFILE%\VeyonTools\runner.cmd" hello
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello"
 ```
 
   - Optional cleanup of accidental root-level log folder:
 
-```cmd
-cmd.exe /c "if exist %USERPROFILE%\logs rmdir /s /q %USERPROFILE%\logs"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "if (Test-Path (Join-Path $env:USERPROFILE 'logs')) { Remove-Item -Path (Join-Path $env:USERPROFILE 'logs') -Recurse -Force }"
 ```
 
   - Optional cleanup of accidentally extracted root-level folders (outside `VeyonScripts`):
 
-```cmd
-cmd.exe /c "for %D in (apps bootstrap docs runner) do if exist %USERPROFILE%\%D rmdir /s /q %USERPROFILE%\%D"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$folders = 'apps','bootstrap','docs','runner'; foreach ($d in $folders) { $p = Join-Path $env:USERPROFILE $d; if (Test-Path $p) { Remove-Item -Path $p -Recurse -Force } }"
 ```
 
   - Run this only after confirming `%USERPROFILE%\VeyonScripts\` has the expected folders.

@@ -12,8 +12,10 @@ If you use a different folder name, update the install command accordingly.
 
 ## 2) Install or Update Tools (run via Veyon Start application)
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+Veyon Start requires PowerShell wrappers for reliable execution; cmd commands with arguments can fail.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonScripts\bootstrap\install-or-update.cmd')"
 ```
 
 Expected result:
@@ -26,14 +28,14 @@ Expected result:
 
 Run the example app:
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello"
 ```
 
 Run with arguments:
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello --mode demo"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello --mode demo"
 ```
 
 ## 4) Add or Update an App Version
@@ -43,8 +45,8 @@ cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd hello --mode demo"
 2. Transfer updated package via Veyon File Transfer.
 3. Run install/update command again:
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonScripts\bootstrap\install-or-update.cmd"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonScripts\bootstrap\install-or-update.cmd')"
 ```
 
 The bootstrap script updates each app's `current.txt` pointer to the highest version folder name.
@@ -64,8 +66,8 @@ The bootstrap script updates each app's `current.txt` pointer to the highest ver
 
 For any app, use:
 
-```cmd
-cmd.exe /c "%USERPROFILE%\VeyonTools\runner.cmd <app-id> [args]"
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id> [args]"
 ```
 
 Keep this command stable; update app payloads behind the scenes.
