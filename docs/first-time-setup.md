@@ -74,16 +74,16 @@ If missing, your ZIP layout/path is wrong. Re-run Option A with the correct ZIP 
 
 ## Step 4: Run the first test app
 
-In the Veyon Run program dialog, paste this command (PowerShell invokes the runner with arguments):
+In the Veyon Run program dialog, paste this command (PowerShell changes to VeyonTools first so the correct runner runs and logs go to the right place):
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' hello"
 ```
 
 Optional argument test:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello --mode demo"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' hello --mode demo"
 ```
 
 ## Step 5: Verify success on managed computers
@@ -102,7 +102,7 @@ Confirm a new log file appears after running `hello`.
 Use only the stable runtime command pattern:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id> [args]"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' <app-id> [args]"
 ```
 
 ## Troubleshooting
@@ -145,7 +145,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:US
   - Run only this command going forward:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' hello"
 ```
 
   - Optional cleanup of accidental root-level log folder:

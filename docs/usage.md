@@ -29,13 +29,13 @@ Expected result:
 Run the example app:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' hello"
 ```
 
 Run with arguments:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') hello --mode demo"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' hello --mode demo"
 ```
 
 ## 4) Add or Update an App Version
@@ -67,7 +67,7 @@ The bootstrap script updates each app's `current.txt` pointer to the highest ver
 For any app, use:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id> [args]"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' <app-id> [args]"
 ```
 
 Keep this command stable; update app payloads behind the scenes.

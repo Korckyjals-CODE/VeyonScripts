@@ -44,13 +44,13 @@ Make deployment and execution predictable:
 Use one stable command in Start application:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id>"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' <app-id>"
 ```
 
 With arguments:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& (Join-Path $env:USERPROFILE 'VeyonTools\runner.cmd') <app-id> --mode quiz"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location (Join-Path $env:USERPROFILE 'VeyonTools'); & '.\runner.cmd' <app-id> --mode quiz"
 ```
 
 If launching PowerShell payloads inside the runner, use:
